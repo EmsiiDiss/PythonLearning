@@ -1,10 +1,8 @@
 from datetime import datetime
 
-liczba = 1
-wynik = 0
-
 def prime_numver():
-    global liczba, wynik
+    liczba = 1
+    wynik = 0
     date1 = datetime.now()
     while liczba <= 100000:
         for i in range(2,int(liczba/2)+1):
