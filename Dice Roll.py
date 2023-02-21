@@ -5,37 +5,34 @@
 import random
 from datetime import datetime
 
+odstep = " " *8
 min_val = 1
 max_val = 6
-odstep = " " *16
-ile_razy = 1
 
-def main():
-    global ilosc, kostka_sr, ile_razy
-
+def reset():
+    global ilosc, liczba_1, liczba_2, liczba_3, liczba_4, liczba_5, liczba_6, kostka_sr, min_val, max_val, odstep, ile_razy 
     liczba_1 = 0
     liczba_2 = 0 
     liczba_3 = 0 
     liczba_4 = 0 
     liczba_5 = 0
     liczba_6 = 0
-    ilosc = 0
     kostka_sr = 0
+    ilosc = 0  
+    ile_razy = 1
+
+def liczba_roli():
     try:
-        global ile_razy
         ile_razy = int(input(odstep + "Ile razy chcesz rolować?\n"))
-    except ValueError:
-        pass  
+    except ValueError:    
+        ile_razy = 1
+    baza(ile_razy)
 
-    date1 = datetime.now()
-    for i in range(0,ile_razy):
-        kostka = random.randint(min_val,max_val)
-        ilosc = ilosc + 1
+def statystyki(statystyka, kostka, start):
+    global ilosc, liczba_1, liczba_2, liczba_3, liczba_4, liczba_5, liczba_6, kostka_sr
 
-        if statystyka == 1: 
-            print("Kostka wylosowała = " + str(kostka))
-
-        kostka_sr= (kostka_sr + kostka)
+    kostka_sr = (kostka_sr + kostka)
+    if statystyka == 1 or statystyka == 2:    
         if kostka == 1:
             liczba_1 = liczba_1 + 1
         elif kostka == 2:
@@ -48,21 +45,44 @@ def main():
             liczba_5 = liczba_5 + 1
         elif kostka == 6:
             liczba_6 = liczba_6 + 1 
-        print(char[kostka-1])     
-
-    if statystyka == 1:                                                          
+ 
+    if (statystyka == 1 or statystyka == 2) and start != 1:                                    
         date2 = datetime.now()
-        print("1-%r\n2-%r\n3-%r\n4-%r\n5-%r\n6-%r" % (liczba_1,liczba_2,liczba_3,liczba_4,liczba_5,liczba_6))
-        print("Średnio wypadało oczkek= " + str(kostka_sr / ilosc)[0:4])
         czas_minuty = int((date2 - date1).total_seconds()/60)
         czas_sekundy = int((date2 - date1).total_seconds()%60)
-        print("Czas obliczeń : " + str(czas_minuty) + ":" + str(czas_sekundy))
+        print("""
+Statystyki:
+        1-%r
+        2-%r
+        3-%r
+        4-%r
+        5-%r
+        6-%r""" 
+        % (liczba_1,liczba_2,liczba_3,liczba_4,liczba_5,liczba_6)
+        )
+        print("Średnio wypadało oczkek = " + str(kostka_sr / ilosc)[0:4])
+        print("Czas obliczeń = " + str(czas_minuty) + ":" + str(czas_sekundy))
+
+
+def baza(ile_razy):
+    global statystyka, date1, ilosc
+    date1 = datetime.now()
+    for i in range(0,ile_razy):
+        kostka = random.randint(min_val,max_val)
+        ilosc = ilosc + 1
+        statystyki(statystyka, kostka, 1)
+        print(char[kostka-1])     
+        print("Kostka wylosowała = " + str(kostka)+"\n")
+        
+
+    statystyki(statystyka, 0, 0)
     resecik = input("Jeszcze raz? y/n\n")
     if resecik == "y" or resecik == "Y" or resecik == '':
+        if statystyka != 2:
+            reset()
         print("Okay!")
-        main()
+        liczba_roli()
     else:
-        
         print("Bye!")
 
 char = [("""
@@ -109,12 +129,25 @@ char = [("""
             """),                        
         ]
 
-try:
+def main():
+    reset()
     try:
-        statystyka = int(input("Włączyć statystykę? 1/0\n"))
+        global statystyka
+        print("""
+            0 - brak statystyki,
+            1 - statystyka miękka,
+            2 - statystyka twarda,
+        """)
+        statystyka = int(input(odstep + "Włączyć statystykę? 2/1/0\n"))
+        
     except:
         print("Źle coś wprowadziłeś/aś - statystyka WYŁĄCZONA") 
-        statystyka = 0   
+        statystyka = 0
+    statystyki(statystyka,0,1)
+    liczba_roli()
+
+try:
     main()
 except KeyboardInterrupt:
+    statystyki(2,0,0)
     print("XDDD")            
