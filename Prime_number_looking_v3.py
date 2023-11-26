@@ -9,9 +9,11 @@ def sumowanie(liczba):
         miejsce = miejsce + 1
     return suma    
 
-def prime_numver(liczba):
-    global wynik
-    wynik = 0
+liczba = 100000
+wynik = 0
+
+def prime_numver():
+    global liczba, wynik
     date1 = datetime.now()
     for sprawdzana in range(1, liczba):
         ost_liczba = int(str(sprawdzana)[-1])
@@ -35,6 +37,6 @@ def prime_numver(liczba):
     print("Czas obliczen = " + str(czas_minuty) + ":" + str(czas_sekundy))    
 
 try:
-    prime_numver(liczba=10000)
+    prime_numver()
 except KeyboardInterrupt:
     print("XD")    
