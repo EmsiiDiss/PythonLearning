@@ -1,0 +1,1 @@
+Welcome to my GitHub repository! Here you'll find various programs dedicated to learning and academic studies. Whether it's educational projects or tools for coursework, feel free to explore and utilize these resources to enhance your learning journey.
